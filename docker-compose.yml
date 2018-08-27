@@ -1,7 +1,15 @@
-version: '2'
+version: '3.7'
 services:
-  nginx:
-    build: .
+  missile_command-aws:
+    image: missile_command-aws:latest
+    build:
+      context: ./
+      dockerfile: Dockerfile
     ports:
       - "80:80"
-    image: carmenpuccio/missile_command-aws
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
