@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: missile-command
+spec:
+  selector:
+    k8s-app: missile-command
+  ports:
+  - port: 80
+    targetPort: missile-command
+    name: http
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: missile-command-deployment
+  labels:
+    k8s-app: missile-command
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      k8s-app: missile-command
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        k8s-app: missile-command
+    spec:
+      containers:
+      - image: carmenpuccio/missile_command-aws:1.0
+        name: missile-command
+        env:
+        - name: foo
+          value: bar
+        ports:
+        - containerPort: 80
+          name: missile-command
