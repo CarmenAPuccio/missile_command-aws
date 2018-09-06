@@ -38,3 +38,12 @@ spec:
         ports:
         - containerPort: 80
           name: missile-command
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+            httpHeaders:
+              - name: X-Custom-Header
+                value: missile-command
+          initialDelaySeconds: 5
+          periodSeconds: 5
